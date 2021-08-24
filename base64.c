@@ -24,7 +24,7 @@ unsigned char *base64_encode(unsigned char *str)
     res=malloc(sizeof(unsigned char)*len+1);  
     res[len]='\0';  
   
-//以3个8位字符为一组进行编码  
+    /* 以3个8位字符为一组进行编码 */
     for(i=0,j=0;i<len-2;j+=3,i+=4)  
     {  
         res[i]=base64_table[str[j]>>2]; //取出第一个字符的前6位并找出对应的结果字符  
