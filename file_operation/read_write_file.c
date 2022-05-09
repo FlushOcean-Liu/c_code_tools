@@ -12,7 +12,7 @@ int traverse_directory_files(const char *filepath)
 {
     int          ret    = 0;
     DIR *        dir    = NULL;
-    struct dirent *entry = NULL;;
+    struct dirent *entry = NULL;
     char sub_filepath[BUFFER_MAX_SIZE] = { 0 };
 
     if (!(dir = opendir(filepath))){
@@ -47,10 +47,32 @@ int traverse_directory_files(const char *filepath)
 
 
 
-int read_file(char *filepath)
+int read_file(const char *filepath)
 {
-    FILE       *fp;
-    fp = fopen(filepath, "w");
+    FILE       *fp = NULL;
+    /*
+     * 模式  描述:
+     * "r"   以只读方式打开文件，该文件必须存在;
+     * "r+"  以读/写方式打开文件，该文件必须存在;
+     * "rb+" 以读/写方式打开一个二进制文件;
+     * "rt+" 以读/写方式打开一个文本文件，运行读和写;
+     * "w"   打开只写文件，若文件存在则长度清零，即该文件
+     *       内容消失，若不存在则创建该文件;
+     * "w+"  打开可读/写文件，若文件存在则文件长度清零，即
+     *       该文件内容会消失，若文件不存在则建立该文件;
+     * "a"   以附加的方式打开只写文件，若文件不存在，则会建立
+     *       该文件，如果文件存在，写入的数据会被加到文件尾部，
+     *       即文件原先内容会被保留（EOF符保留）
+     * "a+"  以附加的方式打开可读/写文件，若文件不存在，则会建立
+     *       该文件，如果文件存在，写入的数据会被加到文件尾部，
+     *       即文件原先内容会被保留（原来EOF符 不保留）
+     * "wb"  以只写方式打开或建立一个二进制文件，允许写数据;
+     * "wb+" 以读/写方式打开或建立一个二进制文件，允许读写;
+     * "wt+" 以读/写方式打开或建立一个文本文件，允许读写;
+     * "at+" 以读/写方式打开一个文本文件，允许读或在文件末追加数据;
+     * "ab+" 以读/写方式打开一个二进制文件，允许读或在文件末追加数据。
+    */
+    fp = fopen(filepath, "r");
     if(!fp){
         printf("fopen %s failed !\n",filepath);
         return -1;
@@ -60,7 +82,12 @@ int read_file(char *filepath)
     int line=0;
     while(fgets(buff, sizeof(buff), fp)!=NULL){
         line++;
-        printf("[line_%04d]%s\n",line,buff);
+        printf("[line_%04d]%s",line,buff);
+    }
+
+    if(fp){
+        fclose(fp);
+        fp = NULL;
     }
 
     return 0;
@@ -69,14 +96,63 @@ int read_file(char *filepath)
 int write_file(const char *src_file, const char *dst_file)
 {
 
+    FILE  *rfp = NULL;
+    FILE  *wfp = NULL;
 
+    size_t ret = 0;
 
+    rfp = fopen(src_file, "r");
+    if(!rfp){
+        printf("fopen %s failed !\n",src_file);
+        return -1;
+    }
+
+    wfp = fopen(dst_file, "w");
+    if(!wfp){
+        printf("fopen %s failed !\n",dst_file);
+        return -1;
+    }
+
+    char buff[BUFFER_MAX_SIZE]={0};
+    int line=0;
+    while(fgets(buff, sizeof(buff), rfp)!=NULL){
+        line++;
+        printf("[line_%04d]%s",line,buff);
+        ret = fwrite(buff, strlen(buff), 1, wfp);
+        if(ret!=1){
+            printf("write failed!\n");
+            return -1;
+        }
+    }
+
+    if(rfp){
+        fclose(rfp);
+        rfp = NULL;
+    }
+
+    if(wfp){
+        fclose(wfp);
+        wfp = NULL;
+    }
+    
     return 0;
 }
 
+
+void help_usage(void)
+{
+    printf("help:\n");
+    printf("example [rwt] [filepath]\n");
+}
+
+
 int main(int argc, char *argv[])
 {
+    //traverse_directory_files("/home/liugh");
 
+    //read_file("./CMakeCache.txt");
+
+    write_file("./CMakeCache.txt", "./new_file.txt");
 
     return 0;
 }
