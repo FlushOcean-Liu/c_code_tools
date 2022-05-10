@@ -23,6 +23,9 @@ void *thread_func(void *argv)
             printf("Error while binding thread to core %d\n",core_affinity);
     }
     */
+    char *thread_name=(char *)argv;
+    printf("thread name:%s\n",thread_name);
+    
     int count=0;
     while(1){
         count++;
@@ -45,6 +48,9 @@ int main(int argc, char *argv[])
     pthread_t pthread;
 
     int status = 0;
+
+    /* 此次传递给线程的参数要独立分配空间,
+    在一次创建多个线程时容易只给一个地址空间的参数*/
     char thread_name[20]={0};
     strncpy(thread_name, "thread_test",strlen("thread_test"));
     status = pthread_create(&pthread, NULL, thread_func, (void *)thread_name);
@@ -53,6 +59,7 @@ int main(int argc, char *argv[])
         exit(-1);
     }
 
+    /* 主线程等待子线程的终止 */
     pthread_join(pthread, NULL);
 
     return 0;
