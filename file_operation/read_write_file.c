@@ -39,8 +39,10 @@ int traverse_directory_files(const char *filepath)
         }
     }
     
-    if (dir)
+    if (dir){
         closedir(dir);
+        dir = NULL;
+    }
 
     return 0;
 }
