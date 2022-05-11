@@ -7,7 +7,15 @@
 
 #define   BUFFER_MAX_SIZE     1024
 
-//遍历文件夹及其子目录
+/*
+ * Recurve traverse directiory 
+ *
+ * @filepath  file name with path
+ *
+ * return
+ *   -1 failed
+ *   0  success
+ */
 int traverse_directory_files(const char *filepath)
 {
     int          ret    = 0;
@@ -48,9 +56,23 @@ int traverse_directory_files(const char *filepath)
 }
 
 
-
-int read_file(const char *filepath)
+/*
+ * Read each line of the file and print
+ *
+ * @filepath  file name with path
+ *
+ * return
+ *   -1 failed
+ *   0  success
+ */
+int get_file_line(const char *filepath)
 {
+    if(!filepath){
+        printf("filepath is NULL\n");
+        return -1;
+    }
+    
+
     FILE       *fp = NULL;
     /*
      * 模式  描述:
@@ -95,9 +117,24 @@ int read_file(const char *filepath)
     return 0;
 }
 
-int write_file(const char *src_file, const char *dst_file)
-{
 
+
+/*
+ * Copy a file data to new name file
+ *
+ * @src_file  raw file name with path
+ * @dst_file  new file name with path
+ *
+ * return
+ *   -1 failed
+ *   0  success
+ */
+int copy_new_file(const char *src_file, const char *dst_file)
+{
+    if(!src_file || !dst_file){
+        printf("src_file or dst_file is NULL\n");
+        return -1;
+    }
     FILE  *rfp = NULL;
     FILE  *wfp = NULL;
 
@@ -152,9 +189,9 @@ int main(int argc, char *argv[])
 {
     //traverse_directory_files("/home/liugh");
 
-    //read_file("./CMakeCache.txt");
+    //get_file_line("./CMakeCache.txt");
 
-    write_file("./CMakeCache.txt", "./new_file.txt");
+    copy_new_file("./CMakeCache.txt", "./new_file.txt");
 
     return 0;
 }
