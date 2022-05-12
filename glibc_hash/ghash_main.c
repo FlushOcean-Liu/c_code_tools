@@ -3,75 +3,97 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct _Node {
-    char key[32];
-    char value[32];
-}Node;
 
-static void displayhash(gpointer key, gpointer value, gpointer user_data) {
-    printf("user_data:%s\n",user_data);
-    printf("key:%s value:%s\n",key,value);
+#define INIT_ELEMENT_NUM   32
+static GHashTable *g_hash = NULL;
+
+void print_hash_element(gpointer key, gpointer value, gpointer user_data) 
+{
+    printf("[%s]key:%s value:%s\n",(char *)user_data, (char *)key, (char *)value);
 }
 
-static void destroy_key(gpointer hash_data) {
-    printf("destroy key:%s\n",hash_data);
-    //因为我这里的键是数组形式不是指针所以不用释放内存。我就直接清空吧
-/*    free(hash_data);
-    hash_data = NULL;*/
-    memset(hash_data,0,sizeof(hash_data));
+void destroy_key(gpointer hash_key) 
+{
+    if(hash_key){
+        printf("destroy key:%s\n",(char *)hash_key);
+        free(hash_key);
+        hash_key = NULL;
+    }
 }
 
-static void destroy_value(gpointer hash_data) {
-    printf("destroy value:%s\n",hash_data);
-    //因为我这里的值是数组形式不是指针所以不用释放内存。我就直接清空吧
-/*    free(hash_data);
-    hash_data = NULL;*/
-    memset(hash_data,0,sizeof(hash_data));
+void destroy_value(gpointer hash_value) 
+{
+    if(hash_value){
+        printf("destroy value:%s\n",hash_value);
+        free(hash_value);
+        hash_value = NULL;
+    }
 }
 
-/*用来创建每个节点。每个键值对都需要有自己的内存*/
-Node *create_node(char *key,char * value) {
-    Node *node = NULL;
-    node = malloc(sizeof(Node));
-    if (node == NULL) {
-        return NULL;
+
+int init_hash_table(void)
+{
+    int ret = 0;
+    g_hash = g_hash_table_new_full(g_str_hash, g_int_equal,
+                                 destroy_key, destroy_value);
+    if(!g_hash){
+        printf("g_hash create failed!\n");
+        return -1;
     }
 
-    memset(node,0,sizeof(Node));
-    strcpy(node->key,key);
-    strcpy(node->value,value);
+    int i = 0;
+    char key[64] ;
+    char value[64] ;
+    for(i = 0; i< INIT_ELEMENT_NUM;i++){
+        snprintf(key,sizeof(key),"%d",i);
+        snprintf(value,sizeof(value), "%d", random());
+        
+        char* pkey   = strdup(key);
+        char* pvalue = strdup(value);
 
-    return node;
+        if( !pkey || !pvalue){
+            printf("key or value malloc failed\n");
+            return -2;
+        }
+
+        g_hash_table_insert(g_hash, pkey,pvalue);
+    }
+
+    return 0;
 }
+
+
+
 
 int main()
 {
     char buff[32] = {0};
-    static GHashTable *g_hash = NULL;
-    
-    g_hash = g_hash_table_new_full(g_str_hash, g_int_equal, destroy_key, destroy_value);
-    
-    Node *node = create_node("name","xcy");
-    if(node != NULL)
-        g_hash_table_insert(g_hash, &node->key, &node->value);
-    Node *node1 = create_node("age","18");
-    if(node1 != NULL)
-        g_hash_table_insert(g_hash, &node1->key, &node1->value);
-    Node *node2 = create_node("sex","man");
-    if(node2 != NULL)
-        g_hash_table_insert(g_hash, &node2->key, &node2->value);
-    Node *node3 = create_node("id","00001");
-    if(node3 != NULL)
-        g_hash_table_insert(g_hash, &node3->key, &node3->value);
 
-
-    memcpy(buff,"this is parm",12);
-    if(NULL != g_hash) {
-        g_hash_table_foreach(g_hash, displayhash, buff);
+    if(init_hash_table()<0){
+        printf("hash table init failed!\n");
+        exit(-1);
     }
-    
 
-    printf("------------------free hashtable------------------------\n");
+    printf("------------------lookup key------------------------\n");
+    char search_key[64]={0};
+    int s_digit=16;
+    snprintf(search_key,64,"%d",s_digit);
+    gpointer result=NULL;
+    result=g_hash_table_lookup(g_hash, (gconstpointer)search_key);
+    if(result)
+        printf("find key:%s result:%s\n",search_key,(char *)result);
 
-    g_hash_table_destroy(g_hash);
+
+    printf("\n------------------hash elements------------------------\n");
+    memcpy(buff,"element",12);
+    if(NULL != g_hash) {
+        g_hash_table_foreach(g_hash, print_hash_element, buff);
+    }
+
+    printf("\n------------------free hashtable------------------------\n");
+    if(g_hash)
+        g_hash_table_destroy(g_hash);
+    g_hash=NULL;
+
+    return 0;
 }
