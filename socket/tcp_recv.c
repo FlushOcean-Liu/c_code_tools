@@ -70,9 +70,9 @@ int create_connect(void)
             continue;
         }
         child_args->conn_fd=conn_fd;
-        printf("[Client] get connection ip:%s,port:%d\n",
-                              inet_ntoa(client_addr.sin_addr),
-                              ntohs(client_addr.sin_port));
+        //printf("[Client] get connection ip:%s,port:%d\n",
+        //                      inet_ntoa(client_addr.sin_addr),
+        //                      ntohs(client_addr.sin_port));
         ret=pthread_create(&tid, NULL,socket_receive_thread, (void*)child_args);
         if(0!=ret){
             printf("create thread failed!\n");
