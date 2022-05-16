@@ -8,6 +8,8 @@
 #include <unistd.h>
 
 
+#define THREAD_NUM  5
+#define MAX_NAME_SIZE 64
 
 void *thread_func(void *argv)
 {
@@ -29,7 +31,7 @@ void *thread_func(void *argv)
     int count=0;
     while(1){
         count++;
-        printf("thread func %d\n",count);
+        printf("%s times %d\n",thread_name, count);
         sleep(1);
     }
 
@@ -45,22 +47,32 @@ void help_usage(void)
 
 int main(int argc, char *argv[])
 {
-    pthread_t pthread;
+    pthread_t pthread[THREAD_NUM];
+    int i;
 
     int status = 0;
 
     /* 此次传递给线程的参数要独立分配空间,
     在一次创建多个线程时容易只给一个地址空间的参数*/
-    char thread_name[20]={0};
-    strncpy(thread_name, "thread_test",strlen("thread_test"));
-    status = pthread_create(&pthread, NULL, thread_func, (void *)thread_name);
-    if(status != 0) {
-        printf( "error on create thread\n");
-        exit(-1);
+    char *thread_name=NULL;
+    for(i=0;i<THREAD_NUM;i++){
+        thread_name=malloc(sizeof(char)*MAX_NAME_SIZE);
+        if(!thread_name){
+            printf("thread name malloc failed\n");
+            exit(-1);
+        }
+        snprintf(thread_name,MAX_NAME_SIZE,"thread_%02d",i);
+        status = pthread_create(&pthread[i], NULL, thread_func, (void *)thread_name);
+        if(status != 0) {
+            printf( "error on create thread\n");
+            exit(-1);
+        }
     }
-
+    
     /* 主线程等待子线程的终止 */
-    pthread_join(pthread, NULL);
+    for(i=0;i<THREAD_NUM;i++){
+        pthread_join(pthread[i], NULL);
+    }
 
     return 0;
 }
