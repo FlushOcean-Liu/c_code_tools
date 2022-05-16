@@ -26,6 +26,10 @@ void *thread_func(void *argv)
     }
     */
     char *thread_name=(char *)argv;
+    if(!thread_name){
+        printf("thread name is NULL\n");
+        return NULL;
+    }
     printf("thread name:%s\n",thread_name);
     
     int count=0;
@@ -33,6 +37,10 @@ void *thread_func(void *argv)
         count++;
         printf("%s times %d\n",thread_name, count);
         sleep(1);
+    }
+
+    if(thread_name){
+        free(thread_name);
     }
 
     return NULL;
