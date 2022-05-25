@@ -8,11 +8,22 @@
 #include <unistd.h>
 
 
+
+/* 互斥锁metux
+ *
+ * 1）谁加锁，谁释放，其他使用者无权释放；
+ * 2）加锁后，其他试图再次加锁的线程会被阻塞；
+ * 3）互斥锁允许进程sleep属于睡眠锁，自旋锁不允许调用者sleep。
+ *
+*/
+
+
 struct data_st{
     int id;
     pthread_mutex_t mutex;
 };
 
+/* 共享数据 */
 struct data_st g_data;
 
 void *thread_func_01(void *argv)
@@ -20,7 +31,7 @@ void *thread_func_01(void *argv)
     while(1){
         pthread_mutex_lock(&g_data.mutex);
         g_data.id++;
-        printf("thread1 print id=%d\n",g_data.id);
+        printf("in thread %lu,  g_data.id=%d\n",pthread_self(),g_data.id);
         pthread_mutex_unlock(&g_data.mutex);
 
         sleep(1);
@@ -33,7 +44,7 @@ void *thread_func_02(void *argv)
     while(1){
         pthread_mutex_lock(&g_data.mutex);
         g_data.id++;
-        printf("thread2 print id=%d\n", g_data.id);
+        printf("in thread %lu, g_data.id=%d\n",pthread_self(), g_data.id);
         pthread_mutex_unlock(&g_data.mutex);
 
         sleep(1);
@@ -44,7 +55,8 @@ void *thread_func_02(void *argv)
 int main()
 {
     pthread_t th1, th2;
-    
+
+    /* 初始化互斥锁 */
     pthread_mutex_init(&g_data.mutex, NULL);
 
     int status=0;
