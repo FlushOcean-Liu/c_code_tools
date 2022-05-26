@@ -14,9 +14,9 @@ add_definitions("-Wall -g")
 
 
 # 生成可执行文件
-add_executable(${PROJECT_NAME} lock_metux.c )
+#add_executable(${PROJECT_NAME} lock_metux.c )
 #add_executable(spinlock lock_spin.c )
-#add_executable(${PROJECT_NAME} lock_atomic.c )
+add_executable(${PROJECT_NAME} lock_atomic.c )
 
 target_link_libraries(${PROJECT_NAME}
 	pthread

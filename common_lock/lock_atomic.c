@@ -6,19 +6,36 @@
 #include <linux/types.h>
 
 
+/*
+ *
+ * 在Linux2.6.18之后，系统便删除了<asm/atomic.h>和<asm/bitops.h>，<alsa/iatomic.h>
+ * 在Linux操作系统下GCC提供了内置的原子操作函数__sync_*，更方便程序员调用
+ *
+ * gcc从4.1.2提供了__sync_*系列的built-in函数，用于提供加减和逻辑运算的原子操作。可以对1,2,
+ * 4或8字节长度的数值类型或指针进行原子操作，其声明如下:
+ * type __sync_fetch_and_add (type *ptr, type value, ...)
+ * type __sync_fetch_and_sub (type *ptr, type value, ...)
+ * type __sync_fetch_and_or (type *ptr, type value, ...)
+ * type __sync_fetch_and_and (type *ptr, type value, ...)
+ * type __sync_fetch_and_xor (type *ptr, type value, ...)
+ * type __sync_fetch_and_nand (type *ptr, type value, ...)
+ * type __sync_add_and_fetch (type *ptr, type value, ...)
+ * type __sync_sub_and_fetch (type *ptr, type value, ...)
+ * type __sync_or_and_fetch (type *ptr, type value, ...)
+ * type __sync_and_and_fetch (type *ptr, type value, ...)
+ * type __sync_xor_and_fetch (type *ptr, type value, ...)
+ * type __sync_nand_and_fetch (type *ptr, type value, ...)
+ *
+*/
 
-/* 定义一个原子变量 */
-static atomic_t g_atomic = ATOMIC_INIT(1);
-
-/* 共享资源 */
 static volatile int g_value = 0;
  
 
 void *thread_func_01(void *argv)
 {
     while(1){
-        atomic_add(1,&g_atomic);
-        printf("in thread %lu value=%d\n", pthread_self(), g_atomic);
+        __sync_fetch_and_add(&g_value, 1);
+        printf("in thread_01 %lu value=%d\n", pthread_self(), g_value);
         sleep(1);
     }
 }
@@ -27,8 +44,8 @@ void *thread_func_01(void *argv)
 void *thread_func_02(void *argv)
 {
     while(1){
-        atomic_add(2, &g_atomic);
-        printf("in thread %lu value=%d\n", pthread_self(), g_atomic);
+        __sync_fetch_and_add(&g_value, 2);
+        printf("in thread_02 %lu value=%d\n", pthread_self(), g_value);
 
         sleep(1);
     }
