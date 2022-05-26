@@ -2,7 +2,7 @@
 
 * 互斥锁(mutex)
 * 自旋锁(spinlock)
-* 原子锁
+* [原子锁](https://github.com/FlushOcean-Liu/linux_c_summary/blob/master/common_lock/atomic.md)
 * 读写自旋锁
 * 顺序锁
 * 信号量
