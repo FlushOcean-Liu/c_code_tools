@@ -1,4 +1,7 @@
 # linux c summary
-## 1.目的
-  主要记录工作学习中常用linux c功能代码。
-  1)file_operation 文件操作相关实例。
+* 文件操作（file_operation）
+* hash操作（glibc_hash）
+* 共享内存实例（share_memory）
+* 套接字应用（socket）
+* 线程（thread）
+* linux锁大全（linux_lock）
