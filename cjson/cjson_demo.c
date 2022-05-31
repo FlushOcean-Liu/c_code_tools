@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
 #include "cJSON.h"
 
 
 int  main()
 {
 //    char *s = "{\"list\":{\"name\":\"xiao hong\",\"age\":10},\"other\":{\"name\":\"hua hua\"}}";
+    if(access("test.json", F_OK)<0){
+        printf("test.json not exist!\n");
+        exit(-1);
+    }
     
     FILE *fp=fopen("test.json","rb");
     fseek(fp, 0, SEEK_END);
