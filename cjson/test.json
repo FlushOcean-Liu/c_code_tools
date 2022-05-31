@@ -1,0 +1,15 @@
+{
+    "list":{ 
+        "name":"xiao hong",
+        "age" :10
+    },
+    "other":{
+        "name":"hua hua"
+    },
+    
+    "field":{
+        "key1":["t1", "l1"],
+        "key2":["t2", "l2"],
+        "key3":["t3", "l3"]
+    }
+}
