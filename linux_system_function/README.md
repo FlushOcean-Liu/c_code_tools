@@ -7,7 +7,7 @@
 
 ## rename使用注意事项
 
-rename 达到move命令功能，要注意不同磁盘的rename会失败。
+在linux上c编程使用的rename函数，不能跨文件分区移动文件。
 
 ## popen说明
 
