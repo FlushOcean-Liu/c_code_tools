@@ -46,3 +46,6 @@ int system(const char * cmdstring)
 
 ```
 
+## popen和system简单区别
+popen可以返回脚本命令执行的结果，但是不知道命令执行成功与否；  
+system可以获取脚本执行成功与否，不能获取脚本执行结果。
