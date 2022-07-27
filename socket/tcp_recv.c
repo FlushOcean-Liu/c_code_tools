@@ -5,6 +5,14 @@
 #include <sys/types.h>
 
 #include <netinet/in.h>
+#include <time.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <pthread.h>
+
+#include <arpa/inet.h>
+#include <netinet/tcp.h> 
+
 
 #define DATA_BUFFER_SIZE  1024
 
