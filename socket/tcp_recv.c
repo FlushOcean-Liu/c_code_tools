@@ -54,6 +54,9 @@ int create_socket_thread(void)
 {
     pthread_t tid;
     struct sockaddr_in  client_addr,server_addr;
+    int opt;
+    int optlen;
+    
     
     bzero(&server_addr,sizeof(server_addr));
     server_addr.sin_family= AF_INET;
@@ -65,7 +68,13 @@ int create_socket_thread(void)
         perror("init server socket error\n");
         return -1;
     }
-    
+
+
+
+        /*绑定端口前，清除之前的绑定*/
+    opt=1;
+    optlen=sizeof(opt);
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);    
     bind(sockfd, (struct sockaddr*)&server_addr,sizeof(server_addr));
     listen(sockfd, MAX_CLIENT);
     socklen_t cli_len;
@@ -99,6 +108,8 @@ int create_socket_thread(void)
 int create_socket_select(void)
 {
     struct sockaddr_in  client_addr,server_addr;
+    int opt;
+    int optlen;
     
     bzero(&server_addr,sizeof(server_addr));
     server_addr.sin_family= AF_INET;
@@ -111,6 +122,11 @@ int create_socket_select(void)
         return -1;
     }
 
+    /*绑定端口前，清除之前的绑定*/
+    opt=1;
+    optlen=sizeof(opt);
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);
+    
     bind(sockfd, (struct sockaddr*)&server_addr,sizeof(server_addr));
 
     listen(sockfd, MAX_CLIENT);

@@ -39,11 +39,15 @@ static int client_socket_init(void)
 
 static int client_socket_reconnect(void)
 {
+    
     g_socket_fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (-1 == g_socket_fd) {
         perror("cannot create socket");
         return -1;
     }
+    //printf("reconnect socket fd=%d\n",g_socket_fd);
+    /* 此处如果不加延迟，会导致connect 失败 */
+    sleep(1);
     if (connect(g_socket_fd, (struct sockaddr *)&g_server, sizeof(g_server)) < 0) {
         perror("connect error");
         return -1;
@@ -104,7 +108,7 @@ int main()
     char buff[MAX_BUFF_SIZE]={0};
 
     while(1){
-        printf("input:\n");
+        printf("input:");
         fgets(buff,MAX_BUFF_SIZE-1,stdin);
         client_socket_send(buff, strlen(buff));
     }
