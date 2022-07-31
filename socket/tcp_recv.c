@@ -71,7 +71,7 @@ int create_socket_thread(void)
 
 
 
-        /*绑定端口前，清除之前的绑定*/
+    /* 绑定端口前，清除之前的绑定*/
     opt=1;
     optlen=sizeof(opt);
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);    
