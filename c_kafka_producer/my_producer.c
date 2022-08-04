@@ -285,7 +285,7 @@ traveral_file_and_readline(const char *base_path, const char *topic, rd_kafka_t 
 
             
             snprintf(file_path,COMMON_FILE_PATH_LEN ,"%s/%s",base_path,ptr->d_name);
-            printf("finde json file :%s\n",file_path);
+            printf("find json file :%s\n",file_path);
             get_file_line(file_path, topic, rk);
         }else if(0==is_dir_exist(base)){    //dir
             traveral_file_and_readline(base, topic, rk);
@@ -315,11 +315,18 @@ int main(int argc, char **argv) {
     }
 
     brokers = argv[1];
-    topic   = argv[2];
+
+
+    /*kafka topic概念：可以类比为数据库中的一张表或文件系统中的一个文件夹；
+
+      生产者向topic推送消息，消费者从topic中拉取消息
+    */
+    topic   = argv[2];  
+    
     file_dir= argv[3];
     
     
-         /*
+    /*
      * Create Kafka client configuration place-holder
      */
     conf = rd_kafka_conf_new();
