@@ -5,3 +5,4 @@
 * 套接字应用（socket）
 * 线程（thread）
 * linux锁大全（linux_lock）
+* linux IPC（进程间通信）
