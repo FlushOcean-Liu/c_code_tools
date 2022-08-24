@@ -71,11 +71,17 @@ int create_socket_thread(void)
 
 
 
-    /* 绑定端口前，清除之前的绑定*/
-    opt=1;
-    optlen=sizeof(opt);
-    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);    
-    bind(sockfd, (struct sockaddr*)&server_addr,sizeof(server_addr));
+    /* 想要达成功能：绑定端口前，清除之前的绑定
+	 *
+	 * 实际虚拟机中，导致accept一直返回-1，注释掉即正常，具体原因需要深入探究
+	 * */
+    //opt=1;
+    //optlen=sizeof(opt);
+    //setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);    
+    
+	
+	
+	bind(sockfd, (struct sockaddr*)&server_addr,sizeof(server_addr));
     listen(sockfd, MAX_CLIENT);
     socklen_t cli_len;
     int       conn_fd = 0;
