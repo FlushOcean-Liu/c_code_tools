@@ -75,11 +75,10 @@ int create_socket_thread(void)
 	 *
 	 * 实际虚拟机中，导致accept一直返回-1，注释掉即正常，具体原因需要深入探究
 	 * */
-    //opt=1;
-    //optlen=sizeof(opt);
-    //setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);    
-    
-	
+    opt=1;
+    optlen=sizeof(opt);
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);    
+    /* 经过测试验证导致accept一直返回-1，是因为accept的第三个参数没有赋值，不是setsockopt原因 */
 	
 	bind(sockfd, (struct sockaddr*)&server_addr,sizeof(server_addr));
     listen(sockfd, MAX_CLIENT);
@@ -88,6 +87,7 @@ int create_socket_thread(void)
     int       ret     = 0;
     
     while(1){
+	    cli_len=sizeof(struct sockaddr); // 此次cli_len不赋值，会导致accept返回-1
         conn_fd=accept(sockfd, (struct sockaddr*)&client_addr, &cli_len);
         if(conn_fd<0){
             printf("accept conn_fd < 0 ,conn_fid=%d\n",conn_fd);
