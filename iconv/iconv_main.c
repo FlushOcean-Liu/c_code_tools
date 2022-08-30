@@ -113,17 +113,18 @@ int  main( int   argc,  char *argv[])
      
      printf ( "type in %s, type out %s\n" , argv[1], argv[2]);
      
-     char  src[100] =  "abcd 1234 其他" ;
+     char  src[100] =  "abcdefg 1234567 中国" ;
      char  des[100] = {0};
-     int  srclen = 50;
-     int  deslen = 50;
+     int  srclen = sizeof(src);
+     int  deslen = sizeof(des);
      const  char  * srctype = argv[1];
      const  char  * destype = argv[2];
 
+     printf("src:%s\n",src);
      memset(des, 0, sizeof(src));
      dump_hex(des, sizeof(des));
      
-     int  ret = utf8_to_gbk(src, strlen(src), des, sizeof(des));
+     int  ret = utf8_to_gbk(src, srclen, des, deslen);
 
      printf("\n-------------------------------------\n");
      dump_hex(des, strlen(des));
