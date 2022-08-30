@@ -106,7 +106,8 @@ int gbk_to_utf8(char *inbuf, int inlen, char *outbuf, int outlen)
 int  main( int   argc,  char *argv[])
 {
      if  (argc < 3){
-         printf( "usage:need two type para\n" );
+         printf( "usage:need two type parameter\n" );
+         printf( "./a.out [utf8|gbk] [gbk|utf8]\n");
          
          return  -1;
      }
@@ -130,7 +131,8 @@ int  main( int   argc,  char *argv[])
      dump_hex(des, strlen(des));
 
      
-     printf ( "des is : %s\n" , des);
+     printf ( "des is : %s" , des);
+     printf("\n\n");
      return  0;
 }
 
