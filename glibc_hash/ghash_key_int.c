@@ -68,7 +68,6 @@ int init_hash_table(void)
 
 int main()
 {
-    char buff[32] = {0};
 
     if(init_hash_table()<0){
         printf("hash table init failed!\n");
@@ -78,10 +77,12 @@ int main()
     printf("------------------lookup key------------------------\n");
     int i;
     gpointer result;
+	char buff[64];
     for(i = 0; i<sizeof(array_field)/sizeof(array_field[0]);i++){
-        result=g_hash_table_lookup(g_hash, (gpointer)array_field[i].key);
+	    snprintf(buff, 64, "%s",array_field[i].key);
+        result=g_hash_table_lookup(g_hash, (gpointer)buff);
         if(result)
-            printf("find key:%s result:%d\n",array_field[i].key,(int *)result);
+            printf("find key:%s result:%d\n",buff,(int *)result);
     
     }
 
