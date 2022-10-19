@@ -77,7 +77,7 @@ int main()
     snprintf(eml_path, 256,"%s", "./email/YV-S2000_mail_20221012150930_192.168.105.42_21612_1024.eml");
     snprintf(result_path, 256, "%s", "./result");
 
-#if 0
+#if 1
 	FILE *fp=NULL;
 	fp=fopen(eml_path, "r");
 	if(!fp){
@@ -98,12 +98,14 @@ int main()
 	//printf("datasize:%d:%s\n",file_size,mail_data);
 #endif
 
-    PyObject* args = PyTuple_New(2);
+    PyObject* args = PyTuple_New(3);
     PyObject* arg1 = PyUnicode_FromString(eml_path);
     PyObject* arg2 = PyUnicode_FromString(result_path);
+    PyObject* arg3 = PyUnicode_FromString(mail_data);
 
     PyTuple_SetItem(args, 0, arg1);
     PyTuple_SetItem(args, 1, arg2);
+    PyTuple_SetItem(args, 2, arg3);
     PyObject* pValue = PyObject_CallObject(func, args);
     if (pValue != NULL)
     {

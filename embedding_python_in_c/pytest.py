@@ -14,12 +14,12 @@ def add(a, b, c):
     return c 
 
 
-def get_mail_message(file_path, annex_path):
+def get_mail_message(file_path, annex_path, mail_data):
     attach_set=""
     try:
-        fp = open(file_path, 'rb')        #打开任意格式文件，通过email库来判断是否为eml文件
-        msg = email.message_from_binary_file(fp)
-        #msg = email.message_from_bytes(data)
+        #fp = open(file_path, 'rb')        #打开任意格式文件，通过email库来判断是否为eml文件
+        #msg = email.message_from_binary_file(fp)
+        msg = email.message_from_string(mail_data)
 
         for part in msg.walk():            #循环信件中的每一个mime的数据块
             if part.get_content_maintype() == 'multipart':
