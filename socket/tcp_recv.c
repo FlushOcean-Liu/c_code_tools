@@ -73,8 +73,9 @@ int create_socket_thread(void)
 
     /* 想要达成功能：绑定端口前，清除之前的绑定
 	 *
-	 * 实际虚拟机中，导致accept一直返回-1，注释掉即正常，具体原因需要深入探究
-	 * */
+     * 实际虚拟机中，导致accept一直返回-1，注释掉即正常，具体原因需要深入探究
+	 *
+	 */
     opt=1;
     optlen=sizeof(opt);
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, optlen);    
@@ -160,8 +161,15 @@ int create_socket_select(void)
     maxfd = MAX(maxfd, sockfd + 1);
     int userindex = 0;
     while(1) {
+        tv.tv_sec = 10;
+        tv.tv_usec = 0;
         
-        select(maxfd, &sockset, NULL, NULL, &tv);
+        ret=select(maxfd, &sockset, NULL, NULL, &tv);
+        printf("ret=%d,select test\n",ret);
+        if(ret<=0){
+			printf("select timeout!\n");
+			continue;
+        }
         if (FD_ISSET(sockfd, &sockset)) {
             conn_fd = accept(sockfd, (struct sockaddr *) &client_addr, &cli_len);
             if (conn_fd <= 0)
