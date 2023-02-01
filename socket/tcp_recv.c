@@ -161,11 +161,12 @@ int create_socket_select(void)
     maxfd = MAX(maxfd, sockfd + 1);
     int userindex = 0;
     while(1) {
+        /* 每次循环设置一下，否则只有一次使能 */
         tv.tv_sec = 10;
         tv.tv_usec = 0;
         
         ret=select(maxfd, &sockset, NULL, NULL, &tv);
-        printf("ret=%d,select test\n",ret);
+        //printf("ret=%d,select test\n",ret);
         if(ret<=0){
 			printf("select timeout!\n");
 			continue;
