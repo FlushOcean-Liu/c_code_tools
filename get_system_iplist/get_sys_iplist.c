@@ -32,21 +32,21 @@ int get_local_ip(char *ip_list, int len)
 
     number = conf_data.ifc_len/sizeof(struct ifreq);
     while (number-- > 0){
-                if (ioctl(fd, SIOCGIFADDR, (char *)&buf[number])){
-                        break;
-                }
+        if (ioctl(fd, SIOCGIFADDR, (char *)&buf[number])){
+            break;
+        }
 
 
         tmp=(inet_ntoa(((struct sockaddr_in*)(&buf[number].ifr_addr))->sin_addr));
-                if(NULL==tmp || len<(strlen(tmp)+offset)){
-                        break;
-                }
-                strcat(ip_list, tmp);
-                offset+=strlen(tmp);
-                ip_list[offset]=',';
-                offset+=1;
+        if(NULL==tmp || len<(strlen(tmp)+offset)){
+            break;
+        }
+        strcat(ip_list, tmp);
+        offset+=strlen(tmp);
+        ip_list[offset]=',';
+        offset+=1;
     }
-        if(offset>0)
+    if(offset>0)
         ip_list[offset-1]='\0';
 
     close(fd);
@@ -55,7 +55,6 @@ int get_local_ip(char *ip_list, int len)
 }
 
 int main()
-
 {
     char ip_list[512]={0};
     memset(ip_list, 0, sizeof(ip_list));
