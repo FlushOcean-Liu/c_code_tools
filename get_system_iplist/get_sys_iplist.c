@@ -61,7 +61,7 @@ int main()
     memset(ip_list, 0, sizeof(ip_list));
     get_local_ip(ip_list, sizeof(ip_list));
 
-        printf("get ip list[%s]\n",ip_list);
+    printf("get ip list[%s]\n",ip_list);
     return 0;
 
 }
