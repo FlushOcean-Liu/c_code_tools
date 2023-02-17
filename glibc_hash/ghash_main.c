@@ -15,7 +15,7 @@ void print_hash_element(gpointer key, gpointer value, gpointer user_data)
 void destroy_key(gpointer hash_key) 
 {
     if(hash_key){
-        printf("destroy key:%s\n",(char *)hash_key);
+        printf("delete key:%s\n",(char *)hash_key);
         free(hash_key);
         hash_key = NULL;
     }
@@ -24,7 +24,7 @@ void destroy_key(gpointer hash_key)
 void destroy_value(gpointer hash_value) 
 {
     if(hash_value){
-        printf("destroy value:%s\n",hash_value);
+        printf("delete value:%s\n",hash_value);
         free(hash_value);
         hash_value = NULL;
     }
@@ -90,8 +90,13 @@ int main()
         g_hash_table_foreach(g_hash, print_hash_element, buff);
     }
 
-    printf("\n------------------free hashtable------------------------\n");
-    if(g_hash)
+    printf("\n------------------ clean hashtable------------------------\n");
+    if(g_hash) /* 清空hash表中数据*/
+        g_hash_table_remove_all(g_hash);
+    
+
+    printf("\n------------------destroy hashtable------------------------\n");
+    if(g_hash) /* 销毁hash表，销毁后不能再用*/
         g_hash_table_destroy(g_hash);
     g_hash=NULL;
 

@@ -57,7 +57,7 @@ int init_hash_table(void)
     char key[64] ;
     char value[64] ;
     for(i = 0; i<sizeof(array_field)/sizeof(array_field[0]);i++){
-        g_hash_table_insert(g_hash, (gpointer)array_field[i].key, (gpointer)array_field[i].value);
+        g_hash_table_insert(g_hash, (gpointer)array_field[i].key, (gpointer)&array_field[i].value);
     }
 
     return 0;
