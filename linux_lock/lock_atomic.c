@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <linux/types.h>
 
-
 /*
  *
  * 在Linux2.6.18之后，系统便删除了<asm/atomic.h>和<asm/bitops.h>，<alsa/iatomic.h>
@@ -30,7 +29,6 @@
 
 static volatile int g_value = 0;
  
-
 void *thread_func_01(void *argv)
 {
     while(1){
