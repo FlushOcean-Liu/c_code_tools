@@ -7,7 +7,6 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-
 #define THREAD_NUM  5
 #define MAX_NAME_SIZE 64
 
