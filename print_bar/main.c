@@ -26,10 +26,12 @@ void process_bar(int number)
 int main(int argc, char *argv[])                                                                                                                                   
 {          
     if(argc!=2){
-		printf("usage:\n");
-		printf("./a.out [number]\n");
-	}
-	int number=(int)atoi(argv[1]);                                                                                                                                  
+        printf("usage:\n");
+	printf("./a.out [number]\n");
+    }
+    int number=(int)atoi(argv[1]);                                                                                                                                  
+    
     process_bar(number);                                                                                                                              
+    
     return 0;                                                                                                                              
 }
