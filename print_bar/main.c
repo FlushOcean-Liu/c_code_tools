@@ -17,7 +17,8 @@ void process_bar(int number)
         index=(i*100)/number;
         proc[index] = '\0';  
         usleep(100);//以微秒为单位的sleep  
-        printf("[%-100s] [%0.04f%%][%d]\r", proc, (double)(i*100.0)/number,i);                                                                                                                                  
+        printf("[%-100s] [%0.04f%%][%d]\r", proc, (double)(i*100.0)/number,i);         
+	fflush(stdout);
         memset(proc, '>', sizeof(proc));    
     }  
     printf("\n");  
