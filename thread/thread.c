@@ -10,6 +10,10 @@
 #define THREAD_NUM  5
 #define MAX_NAME_SIZE 64
 
+static int common_data=0;
+
+pthread_mutex_t thread_lock;
+
 void *thread_func(void *argv)
 {
 
@@ -34,7 +38,13 @@ void *thread_func(void *argv)
     int count=0;
     while(1){
         count++;
-        printf("%s times %d\n",thread_name, count);
+
+	pthread_mutex_lock(&thread_lock);
+	common_data++;	
+	pthread_mutex_unlock(&thread_lock);
+
+        printf("%s times %d, common_data:%d\n",thread_name, count,common_data);
+
         sleep(1);
     }
 
@@ -58,7 +68,8 @@ int main(int argc, char *argv[])
     int i;
 
     int status = 0;
-
+	
+    pthread_mutex_init(&thread_lock);
     /* 此次传递给线程的参数要独立分配空间,
     在一次创建多个线程时容易只给一个地址空间的参数*/
     char *thread_name=NULL;
