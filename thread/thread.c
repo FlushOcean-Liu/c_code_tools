@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
     /* 此次传递给线程的参数要独立分配空间,
     在一次创建多个线程时容易只给一个地址空间的参数*/
     char *thread_name=NULL;
+	
     for(i=0;i<THREAD_NUM;i++){
         thread_name=malloc(sizeof(char)*MAX_NAME_SIZE);
         if(!thread_name){
