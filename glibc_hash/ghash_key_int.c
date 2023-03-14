@@ -46,6 +46,9 @@ void destroy_value(gpointer hash_value)
 int init_hash_table(void)
 {
     int ret = 0;
+
+ 
+    // 用此函数初始化 remove会自动调用回调销毁
     g_hash = g_hash_table_new_full(g_str_hash, g_int_equal,
                                  destroy_key, destroy_value);
     if(!g_hash){
