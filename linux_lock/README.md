@@ -6,4 +6,5 @@
 * 读写自旋锁
 * 顺序锁
 * 信号量
+* 读写(write_lock/write_unlock)
 * RCU(rcu_read_lock()/rcu_read_unlock())
